@@ -1,0 +1,10 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+.alert-alert {
+    @extend .alert-warning;
+  }
+  
+  .alert-notice {
+    @extend .alert-info;
+  }

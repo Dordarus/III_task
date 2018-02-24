@@ -1,0 +1,13 @@
+<% if !user_signed_in? %>
+  <div class="jumbotron">
+      <div class="container">
+        <h1>Welcome!</h1>
+        <p>Register to get started.</p>
+        <div class="col-xs-6 col-xs-offset-3">
+          <%= link_to 'Register', new_user_registration_path, class: 'btn btn-primary btn-lg' %>
+          <%= link_to "Log in with Facebook", user_facebook_omniauth_authorize_url(), class: "btn btn-lg btn-primary" %>
+          <%= link_to "Log in with LinkedIn", user_linkedin_omniauth_authorize_url(), class: "btn btn-lg btn-primary" %>
+        </div>
+      </div>
+  </div>
+<% end %>
