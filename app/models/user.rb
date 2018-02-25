@@ -14,7 +14,6 @@ class User < ActiveRecord::Base
 
   def self.create_from_omniauth(params, for_login)
     user = first_or_create(email: params.info.email)
-    user.save!
     
     if for_login
       user.update({name: params.info.name,
@@ -23,7 +22,7 @@ class User < ActiveRecord::Base
               }) 
     end
 
-    user.providers.find_or_create_by({provider: params.provider, uid: params.uid, oauth_token: params.credentials.token})
+    user.providers.find_or_create_by({ provider: params.provider, uid: params.uid }).update({ oauth_token: params.credentials.token })
     user.skip_confirmation!
     user
   end

@@ -1,5 +1,5 @@
 <% if @provider.nil? %>
-    <%= link_to "Bind GitHub account?", "/users/auth/github", class: "btn btn-lg btn-primary" %>
+    <%= link_to user_github_omniauth_authorize_url(), class: "btn btn-social btn-github btn-lg" do %><i class="fab fa-github"></i> Bind GitHub account?<% end %>
 <% else %>
     <h1>Public Repositories</h1>
     <ul>
