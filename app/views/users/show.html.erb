@@ -1,2 +1,12 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<% if @provider.nil? %>
+    <%= link_to "Bind GitHub account?", "/users/auth/github", class: "btn btn-lg btn-primary" %>
+<% else %>
+    <h1>Public Repositories</h1>
+    <ul>
+        <% @repositories.each do |repo| %>
+            <li>
+            <p><b><%= repo[:name] %></b>: <i><% if repo[:description].blank? %> No description <% else %> <%= repo[:description] %> <% end %></i></p>
+            </li>
+        <% end %>
+    </ul>
+<% end %>

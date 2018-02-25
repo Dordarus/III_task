@@ -1,7 +1,13 @@
 class Auth::CallbacksController < Devise::OmniauthCallbacksController
+
 	def provider
-		user = User.create_from_omniauth(omniauth_params)
+		user = User.create_from_omniauth(omniauth_params, true)
     sign_in_and_redirect user, event: :authentication if user.persisted?
+	end
+
+	def github
+		user = User.create_from_omniauth(omniauth_params, false)
+		redirect_to user
 	end
 
   def failure
