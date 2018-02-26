@@ -54,7 +54,5 @@ RSpec.describe "user logs in" do
         token: "123456qwerty"
         }
     })
-
-    OmniAuth.config.test_mode = false
   end
 end

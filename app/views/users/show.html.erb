@@ -1,12 +1,17 @@
-<% if @provider.nil? %>
-    <%= link_to user_github_omniauth_authorize_url(), class: "btn btn-social btn-github btn-lg" do %><i class="fab fa-github"></i> Bind GitHub account?<% end %>
+<% provide(:title, "Profile") %>
+<% if !current_user.nil? %>
+    <%= link_to user_github_omniauth_authorize_url(), class: "btn btn-social btn-github btn-lg" do %><i class="fab fa-github"></i> Link GitHub account?<% end %>
 <% else %>
     <h1>Public Repositories</h1>
-    <ul>
-        <% @repositories.each do |repo| %>
-            <li>
-            <p><b><%= repo[:name] %></b>: <i><% if repo[:description].blank? %> No description <% else %> <%= repo[:description] %> <% end %></i></p>
-            </li>
-        <% end %>
-    </ul>
+    <% if @repositories.nil? %>
+        <p><i>User hasn't linked a GitHub account yet</i></p>
+    <% else %>
+        <ul>
+            <% @repositories.each do |repo| %>
+                <li>
+                <p><b><%= repo[:name] %></b>: <i><% if repo[:description].blank? %> No description <% else %> <%= repo[:description] %> <% end %></i></p>
+                </li>
+            <% end %>
+        </ul>
+    <% end %>
 <% end %>
