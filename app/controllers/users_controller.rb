@@ -4,8 +4,10 @@ class UsersController < ApplicationController
   respond_to :html, :json
 
   def show
-    if !provider.nil?
-      client = Octokit::Client.new(:access_token => provider.oauth_token)
+    @signed_user = signed_user?
+    @provider = set_user.providers.find_by(provider: 'github')
+    if !@provider.nil?
+      client = Octokit::Client.new(:access_token => @provider.oauth_token)
       @repositories = client.repos
       respond_with({user: set_user, repositories: @repositories, notice: "GitHub account is already binded"}, status: 200)
     else
@@ -18,8 +20,8 @@ class UsersController < ApplicationController
 
   private
 
-  def provider
-    @provider = set_user.providers.find_by(provider: 'github')
+  def signed_user?
+    return set_user == current_user
   end
 
   def set_user
