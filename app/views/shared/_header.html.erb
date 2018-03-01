@@ -3,6 +3,9 @@
     <div class="navbar-header">
       <%= link_to root_path, class: "navbar-brand" do %><strong>HOME</strong><% end %>
     </div>
+    <ul class="nav navbar-nav">
+      <li><%= link_to 'Users', users_path %></li>
+    </ul>
     <ul class="nav navbar-nav navbar-right">
       <% if user_signed_in? %>
         <li class="dropdown">

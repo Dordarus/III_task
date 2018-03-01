@@ -1,0 +1,28 @@
+<% provide(:title, "Subscriptions") %>
+<div class="container text-center">
+    <div class="page-header">
+        <h1>Subscriptions</h1>
+    </div>
+</div>
+<div class="conteiner text-center">
+<h3>A month's subscription</h3>
+  <%= form_tag charges_path do %>
+    <article>
+      <% if flash[:error].present? %>
+        <div id="error_explanation">
+          <p><%= flash[:error] %></p>
+        </div>
+      <% end %>
+      <label class="amount">
+        <span>Amount: <%= formatted_amount(@amount) %></span>
+      </label>
+    </article>
+
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+            data-description="<%= @description %>"
+            data-amount="<% @amount %>"
+            data-email="<%= current_user.email %>"
+            data-locale="auto"></script>
+  <% end %>
+</div>

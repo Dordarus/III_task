@@ -21,16 +21,16 @@ gem 'jbuilder', '~> 2.5'
 gem 'bcrypt', '~> 3.1.7'
 gem 'rspec-rails'
 gem 'dotenv-rails'
+gem 'stripe'
+
 
 
 gem 'devise', '~> 4.2'
-
-gem "octokit", "~> 4.0"
-
 ## OmniAuth authorisations
 gem 'omniauth-linkedin'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
+gem "octokit", "~> 4.0"
 
 
 group :development, :test do

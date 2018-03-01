@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!
   before_action :dany_access, except: [:index]
+  before_action :set_user
   respond_to :html, :json
 
   def index 
@@ -15,7 +16,7 @@ class UsersController < ApplicationController
       @repositories = client.repos
       respond_with({user: set_user, repositories: @repositories, notice: "GitHub account is already binded"}, status: 200)
     else
-      respond_with({user:set_user, notice: "User hasn't linked a GitHub account yet"}, status: 200)
+      respond_with({user: set_user, notice: "User hasn't linked a GitHub account yet"}, status: 200)
     end
   end
 
@@ -35,8 +36,8 @@ class UsersController < ApplicationController
   end
 
   def dany_access
-    if !same_roles? && !signed_user?
-      redirect_to root_path, :alert => "Access denied."
+    if !signed_user? && !same_roles? 
+      redirect_to new_charge_path, :alert => "Access denied. To be able to view profiles, buy a subscription."
     end
   end
 
@@ -45,6 +46,6 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    user = User.find_by(id: params[:id])
+    @user = User.find_by(id: params[:id])
   end
 end
