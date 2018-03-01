@@ -1,6 +1,9 @@
 <% provide(:title, "Profile") %>
-<% if @signed_user && @provider.nil? %>
-    <%= link_to user_github_omniauth_authorize_url(), class: "btn btn-social btn-github btn-lg" do %><i class="fab fa-github"></i> Link GitHub account?<% end %>
+<% if @signed_user %>
+    <%= link_to "Edit profile", edit_user_registration_path, class: 'btn btn-primary' %>
+    <% if @provider.nil? %>
+        <%= link_to user_github_omniauth_authorize_url(), class: "btn btn-social btn-github btn-lg" do %><i class="fab fa-github"></i> Link GitHub account?<% end %>
+    <% end %>
 <% else %>
     <h1> Public Repositories </h1>
     <% if @repositories.nil? %>

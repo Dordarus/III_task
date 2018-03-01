@@ -24,6 +24,7 @@ gem 'dotenv-rails'
 
 
 gem 'devise', '~> 4.2'
+
 gem "octokit", "~> 4.0"
 
 ## OmniAuth authorisations

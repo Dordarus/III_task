@@ -1,7 +1,11 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:edit]
-  before_action -> { check_id(:id) }
+  before_action :authenticate_user!, only: [:edit, :update, :destroy]
+  before_action :dany_access, except: [:index]
   respond_to :html, :json
+
+  def index 
+    @users = User.all
+  end
 
   def show
     @signed_user = signed_user?
@@ -18,26 +22,29 @@ class UsersController < ApplicationController
   def edit
   end
 
+  def update
+  end
+
+  def destroy
+  end
+
   private
 
   def signed_user?
-    return set_user == current_user
+    set_user == current_user
+  end
+
+  def dany_access
+    if !same_roles? && !signed_user?
+      redirect_to root_path, :alert => "Access denied."
+    end
+  end
+
+  def same_roles?
+    set_user.role == current_user.role
   end
 
   def set_user
     user = User.find_by(id: params[:id])
-  end
-
-  def check_id(arg)
-    if set_user.nil?
-      render_404
-    end
-  end
-  
-  def render_404
-    respond_to do |format|
-      format.html {render file: "#{Rails.root}/public/404.html", layout: false, status: 404}
-      format.json {render json: {}, status: 404}
-    end
   end
 end
