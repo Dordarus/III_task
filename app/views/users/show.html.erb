@@ -26,14 +26,16 @@
                         <% @repositories.each do |repo|  %> 
                             <tr>
                                 <td>
-                                    <i><%= repo[:name] %></i>
+                                    <%= repo[:name] %>
                                 </td>
                                 <td>
-                                    <% if repo[:description].blank? %> 
-                                        No description 
-                                    <% else %> 
-                                        <%= repo[:description] %> 
-                                    <% end %>
+                                    <i>
+                                        <% if repo[:description].blank? %> 
+                                            No description 
+                                        <% else %> 
+                                            <%= repo[:description] %> 
+                                        <% end %>
+                                    </i>
                                 </td>                 
                             </tr>
                         <% end %>
