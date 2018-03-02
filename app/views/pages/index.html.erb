@@ -1,13 +1,11 @@
-<% if !user_signed_in? %>
-  <div class="jumbotron">
+<div class="jumbotron">
+    <div class="container">
+      <h1>Welcome!</h1>
+      <p>Register to get started.</p>
       <div class="container">
-        <h1>Welcome!</h1>
-        <p>Register to get started.</p>
-        <div class="container">
-          <%= link_to 'Register', new_user_registration_path, class: 'btn btn-primary btn-lg' %>
-          <%= link_to user_facebook_omniauth_authorize_url(), class: "btn btn-social btn-facebook btn-lg" do %><i class="fab fa-facebook"></i> Log in with Facebook<% end %>
-          <%= link_to user_linkedin_omniauth_authorize_url(), class: "btn btn-social btn-linkedin btn-lg" do %><i class="fab fa-linkedin"></i> Log in with LinkedIn<% end %>
-        </div>
+        <%= link_to 'Register', new_user_registration_path, class: 'btn btn-primary btn-lg' %>
+        <%= link_to user_facebook_omniauth_authorize_url(), class: "btn btn-social btn-facebook btn-lg" do %><i class="fab fa-facebook"></i> Log in with Facebook<% end %>
+        <%= link_to user_linkedin_omniauth_authorize_url(), class: "btn btn-social btn-linkedin btn-lg" do %><i class="fab fa-linkedin"></i> Log in with LinkedIn<% end %>
       </div>
-  </div>
-<% end %>
+    </div>
+</div>

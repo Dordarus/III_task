@@ -22,6 +22,7 @@
         <% end %>
       </div>
 
+    <% if current_user.current_provider.blank? %>
       <div class="form-group">
         <%= f.label :password %>
         <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
@@ -38,10 +39,11 @@
         <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
         <span class="help-block">we need your current password to confirm your changes</span>
       </div>
+    <% end %>
+
       <div class="form-group">
         <%= f.label "Role" %>
         <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]}, class: 'dropdown' ) %>
-        <span class="help-block">we need your current password to confirm your changes</span>
       </div>
 
       <%= f.submit "Update", class: 'btn btn-primary' %>
