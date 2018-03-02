@@ -36,13 +36,17 @@ class UsersController < ApplicationController
   end
 
   def dany_access
-    if !signed_user? && !same_roles? 
-      redirect_to new_charge_path, :alert => "Access denied. To be able to view profiles, buy a subscription."
+    if !signed_user?
+      if current_user.profile_user? 
+        redirect_to user_path(current_user), alert: "Access denied. You are 'profile user', you can't view another profiles"
+      else
+        if set_user.profile_user?
+          redirect_to new_charge_path, :alert => "Access denied. To be able to view profiles, buy a subscription."
+        else
+          redirect_to user_path(current_user), alert: "Access denied. You are 'user', you can't view another 'user' profiles"
+        end
+      end
     end
-  end
-
-  def same_roles?
-    set_user.role == current_user.role
   end
 
   def set_user

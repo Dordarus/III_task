@@ -5,16 +5,41 @@
 <% if @signed_user && @provider.nil? %>
     <%= link_to user_github_omniauth_authorize_url(), class: "btn btn-social btn-github btn-lg" do %><i class="fab fa-github"></i> Link GitHub account?<% end %>
 <% else %>
-    <h1> Public Repositories </h1>
-    <% if @repositories.nil? %>
-        <p><i>User hasn't linked a GitHub account yet</i></p>
-    <% else %>
-        <ul>
-            <% @repositories.each do |repo| %>
-                <li>
-                    <p><b><%= repo[:name] %></b>: <i><% if repo[:description].blank? %> No description <% else %> <%= repo[:description] %> <% end %></i></p>
-                </li>
-            <% end %>
-        </ul>
-    <% end %>
+    <div class="container">
+        <h1> Public Repositories </h1>
+        <% if @repositories.nil? %>
+            <p><i>User hasn't linked a GitHub account yet</i></p>
+        <% else %>
+            <div class="container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <strong>Name</strong>
+                            </th>
+                            <th>
+                                <strong>Description</strong>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @repositories.each do |repo|  %> 
+                            <tr>
+                                <td>
+                                    <i><%= repo[:name] %></i>
+                                </td>
+                                <td>
+                                    <% if repo[:description].blank? %> 
+                                        No description 
+                                    <% else %> 
+                                        <%= repo[:description] %> 
+                                    <% end %>
+                                </td>                 
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+        <% end %>
+    </div>
 <% end %>

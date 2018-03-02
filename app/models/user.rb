@@ -34,4 +34,8 @@ class User < ActiveRecord::Base
     user.providers.find_or_create_by({ provider: params.provider, uid: params.uid }).update({ oauth_token: params.credentials.token })
     user
   end
+
+  def self.profile_user?
+    self.role == 'profile_user'
+  end 
 end
