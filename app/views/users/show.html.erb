@@ -6,7 +6,7 @@
     <%= link_to user_github_omniauth_authorize_url(), class: "btn btn-social btn-github btn-lg" do %><i class="fab fa-github"></i> Link GitHub account?<% end %>
 <% else %>
     <div class="container">
-        <h1> Public Repositories </h1>
+        <h2> Public Repositories </h2>
         <% if @repositories.nil? %>
             <p><i>User hasn't linked a GitHub account yet</i></p>
         <% else %>

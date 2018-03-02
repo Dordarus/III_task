@@ -35,7 +35,24 @@ class User < ActiveRecord::Base
     user
   end
 
-  def self.profile_user?
+  def create_subscription
+    now = DateTime.now
+    self.update(subscribed_at: now, expired_at: now + 1.month)
+  end
+
+  def allow_user?
+    self.subscribed? && !self.subscribtion_expired?
+  end
+
+  def subscribed?
+    !self.subscribed_at.nil?
+  end
+  
+  def subscribtion_expired?
+    DateTime.now >= self.expired_at
+  end
+
+  def profile_user?
     self.role == 'profile_user'
   end 
 end

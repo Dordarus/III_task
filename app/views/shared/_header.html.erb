@@ -4,10 +4,12 @@
       <%= link_to root_path, class: "navbar-brand" do %><strong>HOME</strong><% end %>
     </div>
     <% if user_signed_in? %>     
-      <% if current_user.profile_user? %>
-        <ul class="nav navbar-nav">
-          <li><%= link_to 'Users', users_path %></li>
-        </ul>   
+      <% if !current_user.profile_user? %>
+        <% if !current_user.allow_user?  %>
+          <ul class="nav navbar-nav">
+            <li><%= link_to 'Users', users_path %></li>
+          </ul>        
+        <% end %>
       <% end %>
     <% end %>
     <ul class="nav navbar-nav navbar-right">

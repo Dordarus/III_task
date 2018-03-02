@@ -13,13 +13,13 @@ class ChargesController < ApplicationController
                                       amount: @amount,
                                       description: @description)
 
-  redirect_to thanks_path
+    current_user.create_subscription
+    flash[:success] = "Thanks, you paid #{formatted_amount(@amount)}! Now you can view profiles."
+    redirect_to users_path
+
   rescue Stripe::CardError => e
     flash[:danger] = e.message
     redirect_to new_charge_path
-  end
-
-  def thanks
   end
 
   private
