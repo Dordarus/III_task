@@ -1,4 +1,7 @@
 FactoryBot.define do
+  factory :profile do
+    
+  end
     factory :user do
       name                  "Daniel Vysotskyi"
       email                 "daniel@example.com"

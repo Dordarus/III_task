@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable
   has_many :providers, dependent: :destroy
+  has_one :profile,  dependent: :destroy
 
   devise :database_authenticatable, 
          :registerable,
@@ -24,11 +25,15 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
       user.skip_confirmation!
     end
-
+    
     user = find_by(email: params.info.email)
 
+    
     if for_login
-      user.update({name: params.info.name, current_provider: params.provider}) 
+      if user.profile.nil?
+        user.create_profile!
+      end
+     user.profile.update({name: params.info.name, current_provider: params.provider})
     end 
     
     user.providers.find_or_create_by({ provider: params.provider, uid: params.uid }).update({ oauth_token: params.credentials.token })
@@ -37,7 +42,7 @@ class User < ActiveRecord::Base
 
   def create_subscription
     now = DateTime.now
-    self.update(subscribed_at: now, expired_at: now + 1.month)
+    self.profile.update(subscribed_at: now, expired_at: now + 1.month)
   end
 
   def allow_user?
@@ -45,10 +50,10 @@ class User < ActiveRecord::Base
   end
 
   def subscribed?
-    !self.subscribed_at.nil?
+    !self.profile.subscribed_at.nil?
   end
   
   def subscribtion_expired?
-    DateTime.now >= self.expired_at
+    DateTime.now >= self.profile.expired_at
   end
 end
