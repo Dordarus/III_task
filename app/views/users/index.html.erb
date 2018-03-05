@@ -37,6 +37,11 @@
                 <td>
                     <i><%= b.last_sign_in_at %></i>
                 </td>                  
+                <% if current_user.allow_user? %>
+                    <td>
+                        <%= link_to 'Show', user_path(b), class: 'btn btn-info btn-sm' %>
+                    </td>                
+                <% end %>
             </tr>
             <% end %>
         </tbody>

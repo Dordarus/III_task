@@ -5,7 +5,11 @@ class UsersController < ApplicationController
   respond_to :html, :json
 
   def index 
-    @users = User.all
+    if !current_user.profile_user?
+      @users = User.where(role: "profile_user")
+    else
+      @users = User.all
+    end
   end
 
   def show
@@ -40,7 +44,7 @@ class UsersController < ApplicationController
         redirect_to user_path(current_user), alert: "Access denied. You are 'profile user', you can't view another profiles"
       else
         if set_user.profile_user?
-          
+          subscription
         else
           redirect_to user_path(current_user), alert: "Access denied. You are 'user', you can't view another 'user' profiles"
         end
