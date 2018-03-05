@@ -1,19 +1,13 @@
 class PagesController < ApplicationController
+    before_action :authenticate_user!
+    before_action :check_for_profile_user
     respond_to :html, :json
     
     def index
-        if user_signed_in?
-            if !current_user.profile_user? 
-                if current_user.allow_user?
-                    redirect_to users_path
-                else
-                    redirect_to new_charge_path
-                end
-            else
-                redirect_to users_path
-            end
+        if current_user.allow_user?
+            redirect_to users_path
         else
-            render :index
+            redirect_to new_charge_path
         end
     end
 end

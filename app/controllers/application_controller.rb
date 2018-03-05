@@ -8,4 +8,12 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :role])
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :role])
   end
+
+  def check_for_profile_user
+    redirect_to users_path if current_user.profile_user?
+  end
+
+  def check_for_default_user
+    redirect_to users_path if current_user.user?
+  end
 end

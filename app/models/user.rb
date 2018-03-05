@@ -51,8 +51,4 @@ class User < ActiveRecord::Base
   def subscribtion_expired?
     DateTime.now >= self.expired_at
   end
-
-  def profile_user?
-    self.role == 'profile_user'
-  end 
 end

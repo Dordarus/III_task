@@ -15,7 +15,7 @@ class ChargesController < ApplicationController
                                       description: @description)
 
     current_user.create_subscription
-    flash[:success] = "Thanks, you paid #{formatted_amount(amount_to_be_charged)}! Now you can view profiles."
+    flash[:success] = "Thanks, you paid #{formatted_amount(@amount)}! Now you can view profiles."
     redirect_to users_path
 
   rescue Stripe::CardError => e
