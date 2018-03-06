@@ -5,10 +5,11 @@ class UsersController < ApplicationController
   respond_to :html, :json
 
   def index 
-    if current_user.profile_user?
+    if current_user.profile.profile_user?
       @users = User.all
     else
-      @users = User.where(role: "profile_user")
+      uid = Profile.where(role: "profile_user").pluck(:user_id)
+      @users = User.find(uid)
     end
   end
 
@@ -31,19 +32,17 @@ class UsersController < ApplicationController
   end
 
   def subscription
-    if current_user.allow_user?
-      render :show
-    else
+    if !current_user.allow_user?
       redirect_to new_charge_path, alert: "Access denied. To be able to view profiles, buy a subscription."
     end
   end
 
   def dany_access
     if !same_users?
-      if current_user.profile_user? 
+      if current_user.profile.profile_user? 
         redirect_to user_path(current_user), alert: "Access denied. You are 'profile user', you can't view another profiles"
       else
-        if set_user.profile_user?
+        if set_user.profile.profile_user?
           subscription
         else
           redirect_to user_path(current_user), alert: "Access denied. You are 'user', you can't view another 'user' profiles"

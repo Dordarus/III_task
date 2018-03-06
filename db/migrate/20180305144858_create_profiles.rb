@@ -3,6 +3,7 @@ class CreateProfiles < ActiveRecord::Migration[5.1]
     create_table :profiles do |t|
       t.string :name
       t.string :current_provider
+      t.integer :role
       t.datetime :subscribed_at
       t.datetime :expired_at
       t.belongs_to :user, index: true

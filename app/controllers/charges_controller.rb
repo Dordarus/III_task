@@ -1,6 +1,7 @@
 class ChargesController < ApplicationController
   include ChargesHelper
   before_action :authenticate_user!
+  before_action :check_profile_user
   before_action :set_description, :amount_to_be_charged 
 
   def new
@@ -15,12 +16,10 @@ class ChargesController < ApplicationController
                                       description: @description)
 
     current_user.create_subscription
-    flash[:success] = "Thanks, you paid #{formatted_amount(@amount)}! Now you can view profiles."
-    redirect_to users_path
+    redirect_to users_path, success: "Thanks, you paid #{formatted_amount(@amount)}! Now you can view profiles."
 
   rescue Stripe::CardError => e
-    flash[:danger] = e.message
-    redirect_to new_charge_path
+    redirect_to new_charge_path, danger: e.message
   end
 
   private

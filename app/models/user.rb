@@ -1,25 +1,28 @@
 class User < ActiveRecord::Base
-  enum role: [:user, :profile_user]
   after_initialize :set_default_role, :if => :new_record?
-
-  def set_default_role
-    self.role ||= :user
-  end
-
+  
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable
-  has_many :providers, dependent: :destroy
+  
+  devise :database_authenticatable,
+  :registerable,
+  :trackable, 
+  :validatable,
+  :confirmable,
+  :omniauthable, omniauth_providers: [:facebook, :linkedin, :github]
+  
   has_one :profile,  dependent: :destroy
+  has_many :providers, dependent: :destroy
+  accepts_nested_attributes_for :profile
 
-  devise :database_authenticatable, 
-         :registerable,
-         :recoverable, 
-         :rememberable, 
-         :trackable, 
-         :validatable,
-         :confirmable,
-         :omniauthable, omniauth_providers: [:facebook, :linkedin, :github]
+  def set_default_role
+    self.profile.role ||= :user
+  end
 
+  def profile
+    super || build_profile
+  end
+  
   def self.create_from_omniauth(params, for_login)
     where(email: params.info.email).first_or_create do |user|
       user.password = Devise.friendly_token[0,20]
@@ -28,11 +31,7 @@ class User < ActiveRecord::Base
     
     user = find_by(email: params.info.email)
 
-    
     if for_login
-      if user.profile.nil?
-        user.create_profile!
-      end
      user.profile.update({name: params.info.name, current_provider: params.provider})
     end 
     

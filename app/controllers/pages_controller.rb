@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
     before_action :authenticate_user!
-    before_action :check_for_profile_user
+    before_action :check_profile_user
     respond_to :html, :json
     
     def index

@@ -3,16 +3,19 @@
     <div class="page-header">
         <h1>Edit</h1>    
     </div>
+    <% if !devise_error_messages!.blank? %>
+      <%= content_tag(:div, devise_error_messages!, class: "alert alert-danger") %> 
+    <% end %>
 </div>
 <div class="row">
   <div class="col-md-2 col-md-offset-5">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-      <%= devise_error_messages! %>
-
-      <div class="form-group">
-        <%= f.label :name %>
-        <%= f.text_field :name, class: 'form-control' %>
-      </div>
+      <%= f.fields_for :profile do |profile_form| %>
+        <div class="form-group">
+          <%= profile_form.label :name %><br />
+          <%= profile_form.text_field :name, autofocus: true,  class: "form-control" %>
+        </div>
+      <% end %>
 
       <div class="form-group">
         <%= f.label :email %>
@@ -41,10 +44,9 @@
       </div>
     <% end %>
 
-      <div class="form-group">
-        <%= f.label "Role" %>
-        <%= f.select(:role, User.roles.keys.map {|role| [role.titleize,role]}, class: 'dropdown' ) %>
-      </div>
+      <%= f.fields_for :profile do |profile_form| %>
+        <%= profile_form.select(:role, Profile.roles.keys.map {|role| [role.titleize,role]}) %>
+      <% end %> 
 
       <%= f.submit "Update", class: 'btn btn-primary' %>
       <% end %>
