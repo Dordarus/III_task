@@ -5,48 +5,39 @@ class UsersController < ApplicationController
   respond_to :html, :json
 
   def index 
-    if current_user.profile.profile_user?
-      @users = User.all
+    if current_user.profile.reader?
+      @users = users_by_role("author") 
     else
-      uid = Profile.where(role: "profile_user").pluck(:user_id)
-      @users = User.find(uid)
+      @users = users_by_role("reader") 
     end
   end
-
+  
+  #TODO: custom viwes for new task
   def show
-    @same_users = same_users?
-    @provider = set_user.providers.find_by(provider: 'github')
-    if !@provider.nil?
-      client = Octokit::Client.new(access_token: @provider.oauth_token)
-      @repositories = client.repos
-      respond_with({user: set_user, repositories: @repositories, notice: "GitHub account is already binded"}, status: 200)
-    else
-      respond_with({user: set_user, notice: "User hasn't linked a GitHub account yet"}, status: 200)
-    end
+    @same_users = set_user.current_user?
   end
 
   private
 
-  def same_users?
-    set_user == current_user
+  def users_by_role(role) 
+    u_id = Profile.where(role: role).pluck(:user_id)
+    return User.find(u_id)
   end
 
   def subscription
     if !current_user.allow_user?
-      redirect_to new_charge_path, alert: "Access denied. To be able to view profiles, buy a subscription."
+      redirect_to new_charge_path, alert: "Access denied. To be able to view authors profiles, buy a subscription."
     end
   end
-
+  
   def dany_access
-    if !same_users?
-      if current_user.profile.profile_user? 
-        redirect_to user_path(current_user), alert: "Access denied. You are 'profile user', you can't view another profiles"
+    if !set_user.current_user?
+      if current_user.profile.author? 
+        redirect_to user_path(current_user), alert: "Access denied. You are login as author, you can't view another profiles"
+      elsif set_user.profile.author?
+        subscription
       else
-        if set_user.profile.profile_user?
-          subscription
-        else
-          redirect_to user_path(current_user), alert: "Access denied. You are 'user', you can't view another 'user' profiles"
-        end
+        redirect_to user_path(current_user), alert: "Access denied. You are login as reader, you can't view another readers profiles"
       end
     end
   end

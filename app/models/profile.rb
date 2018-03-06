@@ -1,4 +1,4 @@
 class Profile < ApplicationRecord
-    enum role: [:user, :profile_user]
+    enum role: [:author, :reader]
     belongs_to :user
 end

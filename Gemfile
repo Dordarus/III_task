@@ -29,8 +29,6 @@ gem 'devise', '~> 4.2'
 ## OmniAuth authorisations
 gem 'omniauth-linkedin'
 gem 'omniauth-facebook'
-gem 'omniauth-github'
-gem "octokit", "~> 4.0"
 
 
 group :development, :test do

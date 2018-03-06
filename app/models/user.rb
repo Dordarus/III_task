@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :profile
 
   def set_default_role
-    self.profile.role ||= :user
+    self.profile.role ||= :reader
   end
 
   def profile
@@ -42,6 +42,10 @@ class User < ActiveRecord::Base
   def create_subscription
     now = DateTime.now
     self.profile.update(subscribed_at: now, expired_at: now + 1.month)
+  end
+
+  def current_user?
+    self == current_user  
   end
 
   def allow_user?
