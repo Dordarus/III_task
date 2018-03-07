@@ -1,7 +1,6 @@
 class PagesController < ApplicationController
     before_action :authenticate_user!
-    before_action :check_profile_user
-    respond_to :html, :json
+    before_action :check_author
     
     def index
         if current_user.allow_user?
