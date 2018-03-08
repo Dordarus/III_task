@@ -61,7 +61,8 @@ class BooksController < ApplicationController
 
   def book_owner?
     unless set_book.owner?(current_user) 
-      then redirect_to books_path, flash: {danger: "You aren't the owner of the book. You can't make any changes"} 
+      then redirect_to books_path, 
+      flash: {danger: "You aren't the owner of the book. You can't make any changes"} 
     end
   end
 
