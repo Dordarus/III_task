@@ -1,4 +1,13 @@
 FactoryBot.define do
+  factory :books_topic do
+    
+  end
+  factory :topic do
+    
+  end
+  factory :book do
+    
+  end
   factory :profile do
     
   end

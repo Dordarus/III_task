@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   
   has_one :profile,  dependent: :destroy
   has_many :providers, dependent: :destroy
+  has_many :books, dependent: :destroy
+  has_many :topics, dependent: :destroy
   accepts_nested_attributes_for :profile
 
   def set_default_role
@@ -19,7 +21,7 @@ class User < ActiveRecord::Base
   def profile
     super || build_profile
   end
-  
+
   def self.create_from_omniauth(params)
     where(email: params.info.email).first_or_create do |user|
       user.password = Devise.friendly_token[0,20]
@@ -34,10 +36,6 @@ class User < ActiveRecord::Base
   def create_subscription
     now = DateTime.now
     self.profile.update(subscribed_at: now, expired_at: now + 1.month)
-  end
-
-  def current_user?
-    self == current_user  
   end
 
   def allow_user?

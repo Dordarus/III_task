@@ -6,18 +6,22 @@ class UsersController < ApplicationController
 
   def index 
     if current_user.profile.reader?
-      @users = users_by_role("author") 
-    else
-      @users = users_by_role("reader") 
+      @users = users_by_role("author")
+    else 
+      @users = users_by_role("reader")
     end
+    if @users.empty? then @role = "No records found" else @role = @users.first.profile.role.capitalize.pluralize  end  
   end
   
   #TODO: custom viwes for new task
   def show
-    @same_users = set_user.current_user?
   end
 
   private
+
+  def current_user_profile?
+    set_user  == current_user  
+  end
 
   def users_by_role(role) 
     u_id = Profile.where(role: role).pluck(:user_id)
@@ -31,7 +35,7 @@ class UsersController < ApplicationController
   end
   
   def dany_access
-    if !set_user.current_user?
+    if !current_user_profile?
       if current_user.profile.author? 
         redirect_to user_path(current_user), alert: "Access denied. You are login as author, you can't view another profiles"
       elsif set_user.profile.author?

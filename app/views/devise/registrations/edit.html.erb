@@ -25,7 +25,7 @@
         <% end %>
       </div>
 
-    <% if current_user.profile.current_provider.blank? %>
+    <% if current_user.providers.nil? %>
       <div class="form-group">
         <%= f.label :password %>
         <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>

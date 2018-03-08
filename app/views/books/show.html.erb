@@ -1,0 +1,14 @@
+<% provide(:title, @book.title) %>
+<div class="container">
+    <div class="page-header">
+        <h1><strong><%= @book.title %></strong></h1>      
+    </div>
+    <h3><i><%= @book.genre %></i></h3>
+    <h4><%= @book.year %></h4>
+    <p><i><%= @book.plot %></i></p>  
+    <hr>
+    <% if user_signed_in? && @book.owner?(current_user) %>
+        <%= link_to 'Edit', edit_book_path(@book), class: 'btn btn-primary btn-sm' %>
+        <%= link_to "Delete", book_path(@book), method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
+    <% end %>
+</div>
