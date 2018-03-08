@@ -17,7 +17,7 @@ class Book < ApplicationRecord
                                 only_integer: true}
     validates :plot, presence: true, length: {maximum: 255}
 
-    def owner?(user)
+    def belongs_to?(user)
         self.user == user
     end
 end

@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   resources :users
   resources :charges, only: [:new, :create]
   resources :books
+  resources :topics, except: [:index]
   root "pages#index"
 end
