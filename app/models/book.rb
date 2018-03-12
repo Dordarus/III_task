@@ -1,13 +1,13 @@
 class Book < ApplicationRecord
     belongs_to :user
     has_many :books_topics
-    has_many :topics, :through => :books_topics
+    has_many :topics, :through => :books_topics, dependent: :destroy
     #-----options-------
     before_save do
         title.capitalize!
         genre.downcase!
     end
-    #-----validate------
+    #-----validates------
     validates :title, presence: true, length: {maximum: 30},
                     uniqueness: { case_sensitive: false }
     validates :genre, presence: true, length: {maximum: 30}

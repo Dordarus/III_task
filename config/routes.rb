@@ -4,5 +4,9 @@ Rails.application.routes.draw do
   resources :charges, only: [:new, :create]
   resources :books
   resources :topics, except: [:index]
+  
+  patch '/associations' => 'associations#update'
+  delete '/associations' => 'associations#destroy'
+
   root "pages#index"
 end

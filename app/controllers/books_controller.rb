@@ -1,26 +1,25 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!, except:[:index, :show] 
-  before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_action :set_book, only: [:show, :edit, :update, :destroy, :add_to_topic]
   before_action :check_reader, only: [:new, :create]
   before_action :book_owner?, only: [:edit, :update, :destroy]
+  before_action :book_in_topic, only: [:show]
 
   def index
     @books = Book.all
   end
 
-
   def show
+    @books_topic = BooksTopic.new
   end
 
   def new
     @book = Book.new
   end
 
-
   def edit
   end
 
- 
   def create
     @book = current_user.books.new(book_params)
 
@@ -35,7 +34,6 @@ class BooksController < ApplicationController
     end
   end
 
-
   def update
     respond_to do |format|
       if @book.update(book_params)
@@ -48,7 +46,6 @@ class BooksController < ApplicationController
     end
   end
 
-
   def destroy
     @book.destroy
     respond_to do |format|
@@ -58,6 +55,14 @@ class BooksController < ApplicationController
   end
 
   private
+
+  def book_in_topic
+    @topics = []
+    current_user.topics.each do |topic|
+      next if topic.books.exists?(set_book.id)
+      @topics.push(topic) 
+    end
+  end
 
   def book_owner?
     unless set_book.belongs_to?(current_user) 
@@ -71,6 +76,6 @@ class BooksController < ApplicationController
   end
 
   def book_params
-     params.require(:book).permit(:title, :genre, :year, :plot)
+    params.require(:book).permit(:title, :genre, :year, :plot)
   end
 end

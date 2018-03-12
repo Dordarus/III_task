@@ -1,1 +1,39 @@
-<h3>Topics</h3>
+<div class="jumbotron">
+    <div class="container">
+        <h1><strong><%= @user.profile.name %></strong></h1>
+        <%= link_to 'Add new topic', new_topic_path%>
+    </div>
+</div>
+<div class="container">
+    <div class="page-header">
+        <h1>Topics</h1>
+    </div>
+</div>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <strong>Title</strong>
+                </th>
+                <th>
+                    <strong>Description</strong>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @user.topics.each do |t| %> 
+            <tr>
+                <td>
+                    <i><%= t.title %></i>
+                </td>
+                <td>
+                    <i><%= t.description%></i>
+                </td>          
+                <td>
+                    <%= link_to 'Show', topic_path(t), class: 'btn btn-info btn-sm' %>
+                </td>                
+            </tr>
+            <% end %>
+        </tbody>
+    </table>

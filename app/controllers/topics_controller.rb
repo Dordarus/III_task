@@ -1,10 +1,12 @@
 class TopicsController < ApplicationController
-  before_action :authenticate_user!, except:[:index, :show] 
+  before_action :authenticate_user! 
   before_action :set_topic, only: [:show, :edit, :update, :destroy]
-  before_action :check_author, only: [:new, :create]
-  before_action :topic_owner?, only: [:edit, :update, :destroy]
+  before_action :check_author
+  before_action :topic_owner?, only: [:show, :edit, :update, :destroy]
 
   def show
+    @topics = current_user.topics
+    @books_topic = BooksTopic.new 
   end
 
   def new
@@ -22,6 +24,7 @@ class TopicsController < ApplicationController
         format.html { render :new }
         format.json { render json: @topic.errors, status: :unprocessable_entity }
       end
+    end
   end
 
   def edit
@@ -48,11 +51,11 @@ class TopicsController < ApplicationController
   end
 
   private
-
+  
   def topic_owner?
     unless set_topic.belongs_to?(current_user) 
       then redirect_to user_path(current_user), 
-      flash: {danger: "You aren't the owner of the book. You can't make any changes"} 
+      flash: {danger: "You aren't the owner of the topic. You can't make any changes!"} 
     end
   end
 

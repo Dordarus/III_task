@@ -1,0 +1,59 @@
+<% provide(:title, @topic.title) %>
+<div class="container">
+    <div class="page-header">
+        <h1><strong><%= @topic.title %></strong></h1>   
+        <p><%= @topic.description %></p>
+        <% if user_signed_in? && @topic.belongs_to?(current_user) %>
+            <%= link_to 'Edit', edit_topic_path(@topic), class: 'btn btn-primary btn-sm' %>
+            <%= link_to "Delete", topic_path(@topic), method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
+        <% end %>
+    </div>
+    </hr>
+    <div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <strong>Title</strong>
+                </th>
+                <th>
+                    <strong>Author</strong>
+                </th>
+                <th>
+                    <strong>Year</strong>
+                </th>
+                <th>
+                    <strong>Genre</strong>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @topic.books.each do |b| %> 
+                <tr>
+                    <td>
+                        <i><%= b.title %></i>
+                    </td>
+                    <td>
+                        <i><%= b.user.profile.name %></i>
+                    </td>
+                    <td>
+                        <i><%= b.year %></i>
+                    </td>
+                    <td>
+                        <i><%= b.genre %></i>
+                    </td>                  
+                    <td>
+
+                        <%= form_for(@books_topic, url: associations_path,  method: :delete) do |f| %>
+                            <%= f.hidden_field :book_id, value: b.id %>
+                            <%= f.hidden_field :topic_id, value: @topic.id %>
+
+                        <%= link_to 'Show', book_path(b), class: 'btn btn-info btn-sm' %>
+                        <%= f.submit "Remove", data: {confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
+                        <% end %>
+                    </td>                
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
