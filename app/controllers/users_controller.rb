@@ -13,7 +13,6 @@ class UsersController < ApplicationController
     if @users.empty? then @role = "No records found" else @role = @users.first.profile.role.capitalize.pluralize  end  
   end
   
-  #TODO: custom viwes for new task
   def show
   end
 
