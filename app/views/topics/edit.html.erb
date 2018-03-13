@@ -1,1 +1,7 @@
 <%= render 'shared/topic_form', title: "Edit topic" %>
+<div class="container">
+    <hr>
+    <h3>Delete this topic</h3>
+
+    <%= link_to "Delete", topic_path(@topic), data: { confirm: "You sure?" }, method: :delete, class: 'btn btn-danger btn-sm' %>
+</div>

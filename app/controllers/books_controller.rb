@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
-  before_action :authenticate_user!, except:[:index, :show] 
-  before_action :set_book, only: [:show, :edit, :update, :destroy, :add_to_topic]
+  before_action :authenticate_user!, except:[:index] 
+  before_action :set_book, only: [:show, :edit, :update, :destroy]
   before_action :check_reader, only: [:new, :create]
   before_action :book_owner?, only: [:edit, :update, :destroy]
   before_action :book_in_topic, only: [:show]

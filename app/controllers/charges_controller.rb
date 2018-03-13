@@ -16,7 +16,7 @@ class ChargesController < ApplicationController
                                       description: @description)
 
     current_user.create_subscription
-    redirect_to users_path, success: "Thanks, you paid #{formatted_amount(@amount)}! Now you can view author's profiles."
+    redirect_to users_path, flash: {success: "Thanks, you paid #{formatted_amount(@amount)}! Now you can view author's profiles."}
 
   rescue Stripe::CardError => e
     redirect_to new_charge_path, danger: e.message

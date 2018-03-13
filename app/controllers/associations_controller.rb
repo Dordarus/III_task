@@ -15,7 +15,11 @@ class AssociationsController < ApplicationController
 private
 
     def set_topic_params
-        @topic = Topic.find(params[:books_topic][:topic_id])
-        @book = Book.find(params[:books_topic][:book_id])
+        @topic = Topic.find(book_params[:topic_id])
+        @book = Book.find(book_params[:book_id])
+    end
+
+    def book_params
+        params.require(:books_topic).permit(:topic_id, :book_id)
     end
 end
